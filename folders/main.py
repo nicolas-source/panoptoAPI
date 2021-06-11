@@ -1,5 +1,5 @@
-from soapUpload import startUpload
-from obtainLinks import obtainLinks
+from uploader import startUpload
+from downloader import obtainLinks
 
 
 def main():

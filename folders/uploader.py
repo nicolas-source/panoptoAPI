@@ -1,14 +1,8 @@
-import os
-import sys
-import json
-import time
-import zipfile
-import subprocess
-import getpass
 from zeep import Client
-from shutil import copyfile
 
-from readCSV import csvListOfDicts
+# from Users.nicolas.Library.Python.3.8.lib.python.site-packages.zeep import Client
+
+from reader import csvListOfDicts
 from credentials import *
 
 # folder = input("Folder ID:")
@@ -34,6 +28,7 @@ def create_panopto_session():
     )
 
 
+# Creates an empty session on the Panopto server with the specified name
 def create_panopto_session_name(name):
     x = name
 
@@ -56,7 +51,7 @@ def startUpload():
             print(f'{entry["StudentName"]}_{entry["StudentNumber"]}')
             create_panopto_session_name(f'{entry["StudentName"]}_{entry["StudentNumber"]}')
 
-
+# ----Original Code----
 # n = input("Num sessions?\n")
 # n = int(n)
 # if n < 10:
