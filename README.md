@@ -12,7 +12,7 @@
 
     * Input file specification (Partially completed)
 
-* Choose destination folder (Not completed)
+* Choose destination folder (Not yet completed)
 
 * Specifiy panopto folder (Future feature)
 
@@ -26,7 +26,7 @@
 Run the following from terminal from directory .../panoptoAPI/folders
 
 To input from CSV file:
-python3 main.py
+python3 main.py --filePath csvFiles/inputCSV.csv
 
 To input from Excel file:
 python3 mainExcel.py --fileLocation excelFiles/inputCSV.xlsx --sheet inputCSV --col B --row 2

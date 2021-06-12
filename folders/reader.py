@@ -3,17 +3,25 @@ from openpyxl import load_workbook
 import argparse
 
 
-
 # Input: CSV Column
 # Output: CSV Column as list
-def csvListOfDicts():
-    with open('csvFiles/inputCSV.csv', mode='r', encoding='utf-8-sig') as csv_file:
+# def csvListOfDicts():
+#     with open('csvFiles/inputCSV.csv', mode='r', encoding='utf-8-sig') as csv_file:
+#         csv_reader = csv.DictReader(csv_file)
+#         list = []
+#         for row in csv_reader:
+#             list.append(row)
+#
+#         return list
+
+
+def csvListOfDicts(filePath):
+    with open(str(filePath), mode='r', encoding='utf-8-sig') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         list = []
         for row in csv_reader:
-            list.append(row)
-
-        return list
+            list.append(row['StudentNumber']+row["StudentName"])
+        return lista
 
 
 # Input: ExcelFile, ExcelSheet, ExcelColumn
@@ -23,22 +31,32 @@ def excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol):
     list = []
     excelRow = int(excelRow)
     while excelWorkbook[excelSheetName][excelCol + str(excelRow)].value is not None:
-        list.append(excelWorkbook[excelSheetName][excelCol + str(excelRow)].value)
+        if len(excelWorkbook[excelSheetName][excelCol + str(excelRow)].value) > 3:
+            list.append(excelWorkbook[excelSheetName][excelCol + str(excelRow)].value)
         excelRow += 1
 
     return list
 
 
+def fromFileToList(args):
+
+    if str(args.fileType).lower() == "xslx":
+        return excelListOfDicts(args.filePath, args.sheetName, args.row, args.col)
+
+    if str(args.fileType).lower() == "csv" :
+        return csvListOfDicts(args.filePath)
+
 def parse_argument():
     parser = argparse.ArgumentParser(description='Argument Parser')
     parser.add_argument("--folderID", required=False, dest="folderID", help="Panopto destination folder ID")
-    parser.add_argument('--fileLocation', dest="location", help='Excel File Location')
+    parser.add_argument('--filePath', dest="filePath", help='File Path')
     parser.add_argument("--sheet", dest="sheetName", help='Excel Sheet Name')
-    parser.add_argument("--column", dest="col",help='Excel Column')
+    parser.add_argument("--column", dest="col", help='Excel Column')
     parser.add_argument("--row", dest="row", help='Excel Row')
+    parser.add_argument("--fileType", dest="fileType", help="xslx or csv")
+    parser.add_argument("--username", required=False, dest="username")
+    parser.add_argument("--password", required=False, dest="password")
     return parser.parse_args()
-
-
 
 # args = parse_argument()
 #
@@ -58,6 +76,3 @@ def parse_argument():
 # excelCol = "B"
 #
 # excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol)
-
-
-

@@ -9,6 +9,7 @@ from panopto_folders import PanoptoFolders
 from credentials import *
 
 from os.path import dirname, join, abspath
+
 sys.path.insert(0, abspath(join(dirname(__file__), '..', 'common')))
 from panopto_oauth2 import PanoptoOAuth2
 
@@ -16,12 +17,14 @@ from panopto_oauth2 import PanoptoOAuth2
 # However, it is not the real folder and some API beahves differently than actual folder.
 GUID_TOPLEVEL = '00000000-0000-0000-0000-000000000000'
 
+
 def parse_argument():
     parser = argparse.ArgumentParser(description='Sample of Folders API')
     parser.add_argument('--server', dest='server', required=True, help='Server name as FQDN')
     parser.add_argument('--client-id', dest='client_id', required=True, help='Client ID of OAuth2 client')
     parser.add_argument('--client-secret', dest='client_secret', required=True, help='Client Secret of OAuth2 client')
-    parser.add_argument('--skip-verify', dest='skip_verify', action='store_true', required=False, help='Skip SSL certificate verification. (Never apply to the production code)')
+    parser.add_argument('--skip-verify', dest='skip_verify', action='store_true', required=False,
+                        help='Skip SSL certificate verification. (Never apply to the production code)')
     return parser.parse_args()
 
 
@@ -39,7 +42,12 @@ arg = modifiedArg(server,
 
 
 
-def obtainLinks():
+
+
+
+
+
+def obtainLinksFromFolder(folderID):
     args = arg
 
     if args.skip_verify:
@@ -50,27 +58,26 @@ def obtainLinks():
     # ref. https://2.python-requests.org/en/master/user/advanced/#session-objects
     requests_session = requests.Session()
     requests_session.verify = not args.skip_verify
-    
+
     # Load OAuth2 logic
     oauth2 = PanoptoOAuth2(args.server, args.client_id, args.client_secret, not args.skip_verify)
 
     # Load Folders API logic
-    folders = PanoptoFolders(args.server, not args.skip_verify, oauth2)
-    
+    foldersObjectAPI = PanoptoFolders(args.server, not args.skip_verify, oauth2)
+
     current_folder_id = GUID_TOPLEVEL
-    
+
     # while True:
     #     print('----------------------------')
     #     current_folder = get_and_display_folder(folders, current_folder_id)
     #     sub_folders = get_and_display_sub_folders(folders, current_folder_id)
     #     current_folder_id = process_selection(folders, current_folder, sub_folders)
 
-    desiredFolder = get_and_display_folder(folders, "a7b9e02b-3f0e-4121-b078-ad1600fdaa91")
-    listSessions(folders, desiredFolder)
-    listSessionsToCSV(folders, desiredFolder)
+    folderID = "a7b9e02b-3f0e-4121-b078-ad1600fdaa91"
 
-
-
+    panoptoFolder = get_and_display_folder(foldersObjectAPI, folderID)
+    listSessions(foldersObjectAPI, panoptoFolder)
+    listSessionsToCSV(foldersObjectAPI, panoptoFolder)
 
 
 def listSessionsToCSV(folders, folder):
@@ -93,25 +100,19 @@ def listSessionsToCSV(folders, folder):
                              'Name': entry['Name'],
                              'ViewerUrl': entry['Urls']['ViewerUrl'],
                              'EmbedUrl': entry['Urls']['EmbedUrl'],
-                             'EditUrl': entry['Urls']['ViewerUrl']+"&edit=true"
+                             'EditUrl': entry['Urls']['ViewerUrl'] + "&edit=true"
                              })
-
 
 
 def listSessions(folders, folder):
     print('Sessions in the folder:')
     for entry in folders.get_sessions(folder['Id']):
         print('  {0}:   {1}:   {2}:   {3}:   {4}'.format(entry['Id'],
-                                                  entry['Name'],
-                                                  entry['Urls']['ViewerUrl'],
-                                                  entry['Urls']['EmbedUrl'],
-                                                  entry['Urls']['ViewerUrl']+
-                                                  "&edit=true"))
-
-
-
-
-
+                                                         entry['Name'],
+                                                         entry['Urls']['ViewerUrl'],
+                                                         entry['Urls']['EmbedUrl'],
+                                                         entry['Urls']['ViewerUrl'] +
+                                                         "&edit=true"))
 
 
 def get_and_display_folder(folders, folder_id):
@@ -126,16 +127,17 @@ def get_and_display_folder(folders, folder_id):
         return None
 
     folder = folders.get_folder(folder_id)
-    print('  Name: {0}'. format(folder['Name']))
-    print('  Id: {0}'. format(folder['Id']))
+    print('  Name: {0}'.format(folder['Name']))
+    print('  Id: {0}'.format(folder['Id']))
     if folder['ParentFolder'] is None:
         print('  Parent Folder: Top level folder')
     else:
-        print('  Parent Folder: {0}'. format(folder['ParentFolder']['Name']))
-    print('  Folder URL: {0}'. format(folder['Urls']['FolderUrl']))
-    print('  Embed URL: {0}'. format(folder['Urls']['EmbedUrl']))
-    print('  Share settings URL: {0}'. format(folder['Urls']['ShareSettingsUrl']))
+        print('  Parent Folder: {0}'.format(folder['ParentFolder']['Name']))
+    print('  Folder URL: {0}'.format(folder['Urls']['FolderUrl']))
+    print('  Embed URL: {0}'.format(folder['Urls']['EmbedUrl']))
+    print('  Share settings URL: {0}'.format(folder['Urls']['ShareSettingsUrl']))
     return folder
+
 
 def get_and_display_sub_folders(folders, current_folder_id):
     print()
@@ -149,8 +151,9 @@ def get_and_display_sub_folders(folders, current_folder_id):
         result[key] = entry['Id']
         print('  [{0}]: {1}'.format(key, entry['Name']))
         key += 1
-    
+
     return result
+
 
 def process_selection(folders, current_folder, sub_folders):
     if current_folder is None:
@@ -177,7 +180,7 @@ def process_selection(folders, current_folder, sub_folders):
         if sub_folders[key]:
             return sub_folders[key]
     except:
-        pass # selection is not a number, fall through
+        pass  # selection is not a number, fall through
 
     if selection.lower() == 'p':
         new_folder_id = parent_folder_id
@@ -194,15 +197,18 @@ def process_selection(folders, current_folder, sub_folders):
         list_sessions(folders, current_folder)
     else:
         print('Invalid command.')
-    
+
     return new_folder_id
+
 
 def rename_folder(folders, folder):
     new_name = input('Enter new name: ')
     return folders.update_folder_name(folder['Id'], new_name)
-    
+
+
 def delete_folder(folders, folder):
     return folders.delete_folder(folder['Id'])
+
 
 def search_folder(folders):
     query = input('Enter search keyword: ')
@@ -215,7 +221,7 @@ def search_folder(folders):
     for index in range(len(entries)):
         print('  [{0}]: {1}'.format(index, entries[index]['Name']))
     selection = input('Enter the number (or just enter to stay current): ')
-    
+
     new_folder_id = None
     try:
         index = int(selection)
@@ -226,10 +232,12 @@ def search_folder(folders):
 
     return new_folder_id
 
+
 def list_sessions(folders, folder):
     print('Sessions in the folder:')
     for entry in folders.get_sessions(folder['Id']):
         print('  {0}: {1}'.format(entry['Id'], entry['Name']))
-    
+
+
 if __name__ == '__main__':
-    obtainLinks()
+    obtainLinksFromFolder()
