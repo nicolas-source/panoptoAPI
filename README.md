@@ -8,17 +8,17 @@
 #### Features:
 * Input from CSV file (Completed)
   
-* Input from Excel file (Partially completed)
+* Input from Excel file (Completed, Not yet tested)
 
-    * Input file specification (Partially completed)
+    * Input file specification (Completed, Not yet tested)
 
-* Choose destination folder (Not yet completed)
+* Choose destination folder (Completed, Not yet tested)
 
-* Specifiy panopto folder (Future feature)
+* Specifiy panopto folder (Completed, Not yet tested)
 
-* User specification (Future feature)
+* User specification (Completed, Not yet tested)
 
-* Input data validation (Future feature)
+* Input data validation (Partially completed)
 
 
 
