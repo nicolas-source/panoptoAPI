@@ -3,6 +3,7 @@ from zeep import Client
 # from Users.nicolas.Library.Python.3.8.lib.python.site-packages.zeep import Client
 
 from reader import csvListOfDicts
+from reader import excelListOfDicts
 from credentials import *
 
 # folder = input("Folder ID:")
@@ -44,12 +45,23 @@ def create_panopto_session_name(name):
     )
 
 
-def startUpload():
+def startUploadCSV():
     if csvListOfDicts().__len__() < 10:
         for entry in csvListOfDicts():
             # print(entry)
             print(f'{entry["StudentName"]}_{entry["StudentNumber"]}')
             create_panopto_session_name(f'{entry["StudentName"]}_{entry["StudentNumber"]}')
+
+
+def startUploadExcel(excelFileName, excelSheetName, excelRow, excelCol):
+    if excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol).__len__() < 10:
+        for entry in excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol):
+            # print(entry)
+            # print(f'{entry["StudentName"]}_{entry["StudentNumber"]}')
+            create_panopto_session_name(str(entry))
+
+
+
 
 # ----Original Code----
 # n = input("Num sessions?\n")

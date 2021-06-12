@@ -1,9 +1,9 @@
-from uploader import startUpload
+from uploader import startUploadCSV
 from downloader import obtainLinks
 
 
 def main():
-    startUpload()
+    startUploadCSV()
     obtainLinks()
 
 if __name__ == '__main__':
