@@ -10,7 +10,15 @@
   
 * Input from Excel file (Partially completed)
 
+    * Input file specification (Partially completed)
+
 * Choose destination folder (Not completed)
+
+* Specifiy panopto folder (Future feature)
+
+* User specification (Future feature)
+
+* Input data validation (Future feature)
 
 
 
@@ -23,3 +31,4 @@ python3 main.py
 To input from Excel file:
 python3 mainExcel.py --fileLocation excelFiles/inputCSV.xlsx --sheet inputCSV --col B --row 2
 
+Note: currently both ways output to same file (outputCSV.csv)
