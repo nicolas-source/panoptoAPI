@@ -54,6 +54,7 @@ def startUploadCSV():
 
 
 def startUploadExcel(excelFileName, excelSheetName, excelRow, excelCol):
+
     if excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol).__len__() < 10:
         for entry in excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol):
             # print(entry)

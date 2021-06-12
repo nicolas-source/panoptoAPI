@@ -3,6 +3,7 @@ from openpyxl import load_workbook
 import argparse
 
 
+
 # Input: CSV Column
 # Output: CSV Column as list
 def csvListOfDicts():
@@ -20,7 +21,7 @@ def csvListOfDicts():
 def excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol):
     excelWorkbook = load_workbook(excelFileName)
     list = []
-
+    excelRow = int(excelRow)
     while excelWorkbook[excelSheetName][excelCol + str(excelRow)].value is not None:
         list.append(excelWorkbook[excelSheetName][excelCol + str(excelRow)].value)
         excelRow += 1
@@ -39,15 +40,16 @@ def parse_argument():
 
 
 
-args = parse_argument()
+# args = parse_argument()
+#
+#
+#
+# print(args.folderID)
+# print(args.location)
+# print(args.sheetName)
+# print(args.col)
+# print(args.row)
 
-
-
-print(args.folderID)
-print(args.location)
-print(args.sheetName)
-print(args.col)
-print(args.row)
 
 #
 # excelFileName = "excelFiles/inputCSV.xlsx"
@@ -56,4 +58,6 @@ print(args.row)
 # excelCol = "B"
 #
 # excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol)
+
+
 

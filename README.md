@@ -12,3 +12,14 @@
 
 * Choose destination folder (Not completed)
 
+
+
+#### Usage examples:
+Run the following from terminal from directory .../panoptoAPI/folders
+
+To input from CSV file:
+python3 main.py
+
+To input from Excel file:
+python3 mainExcel.py --fileLocation excelFiles/inputCSV.xlsx --sheet inputCSV --col B --row 2
+
