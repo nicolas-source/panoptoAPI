@@ -21,12 +21,13 @@ def csvListOfDicts(filePath):
         list = []
         for row in csv_reader:
             list.append(row['StudentNumber']+row["StudentName"])
-        return lista
+        return list
 
 
 # Input: ExcelFile, ExcelSheet, ExcelColumn
 # Output: ExcelColumn as list of dicts
 def excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol):
+    print(excelFileName, excelSheetName, excelRow, excelCol)
     excelWorkbook = load_workbook(excelFileName)
     list = []
     excelRow = int(excelRow)
@@ -40,7 +41,8 @@ def excelListOfDicts(excelFileName, excelSheetName, excelRow, excelCol):
 
 def fromFileToList(args):
 
-    if str(args.fileType).lower() == "xslx":
+    if str(args.fileType).lower() == "xlsx":
+        print("---Args---\n", args.filePath, args.sheetName, args.row, args.col)
         return excelListOfDicts(args.filePath, args.sheetName, args.row, args.col)
 
     if str(args.fileType).lower() == "csv" :
@@ -53,7 +55,7 @@ def parse_argument():
     parser.add_argument("--sheet", dest="sheetName", help='Excel Sheet Name')
     parser.add_argument("--column", dest="col", help='Excel Column')
     parser.add_argument("--row", dest="row", help='Excel Row')
-    parser.add_argument("--fileType", dest="fileType", help="xslx or csv")
+    parser.add_argument("--fileType", dest="fileType", help="xlsx or csv")
     parser.add_argument("--username", required=False, dest="username")
     parser.add_argument("--password", required=False, dest="password")
     return parser.parse_args()

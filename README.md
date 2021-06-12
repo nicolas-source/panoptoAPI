@@ -25,10 +25,11 @@
 #### Usage examples:
 Run the following from terminal from directory .../panoptoAPI/folders
 
-To input from CSV file:
-python3 main.py --filePath csvFiles/inputCSV.csv
+-----Demo-----
+(CSV Files)
+python3 main.py --filePath csvFiles/inputCSV.csv --folderID a7b9e02b-3f0e-4121-b078-ad1600fdaa91 --username <username> --password <password> --fileType csv
 
-To input from Excel file:
-python3 mainExcel.py --fileLocation excelFiles/inputCSV.xlsx --sheet inputCSV --col B --row 2
+(Excel Files)
+python3 main.py --filePath excelFiles/inputCSV.xlsx --folderID a7b9e02b-3f0e-4121-b078-ad1600fdaa91 --username <username> --password <password> --fileType xlsx --row 2 --col B --sheet inputCSV
 
 Note: currently both ways output to same file (outputCSV.csv)
