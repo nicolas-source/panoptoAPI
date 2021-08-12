@@ -125,6 +125,24 @@ class PanoptoFolders:
             print('Deletion failed. {0}'.format(e))
             return False
 
+    def update_folder_json(self, folder_id, para):
+        '''
+        Call PUT /api/v1/folders/{id} API to update the name
+        Return True if it succeeds, False if it fails.
+        '''
+        try:
+            while True:
+                url = 'https://{0}/Panopto/api/v1/folders/{1}'.format(self.server, folder_id)
+                payload = {'Parent': para}
+                headers = {'content-type': 'application/json'}
+                resp = self.requests_session.put(url = url, json = payload, headers = headers)
+                if self.__inspect_response_is_retry_needed(resp):
+                    continue
+                return True
+        except Exception as e:
+            print('Rename failed. {0}'.format(e))
+            return False
+
     def search_folders(self, query):
         '''
         Call GET /api/v1/folders/search API and return the list of entries.

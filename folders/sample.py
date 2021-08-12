@@ -100,7 +100,7 @@ def process_selection(folders, current_folder, sub_folders):
 
     print()
     print('[P] Go to parent')
-    print('[R] Rename this folder')
+    print('[R] Rename this parent folder ID')
     print('[D] Delete this folder')
     print('[S] Search folders')
     print('[L] List sessions in the folder')
@@ -117,7 +117,8 @@ def process_selection(folders, current_folder, sub_folders):
     if selection.lower() == 'p':
         new_folder_id = parent_folder_id
     elif selection.lower() == 'r' and current_folder is not None:
-        rename_folder(folders, current_folder)
+        # rename_folder(folders, current_folder)
+        redef_parent_folder(folders, current_folder)   # Edited
     elif selection.lower() == 'd' and current_folder is not None:
         if delete_folder(folders, current_folder):
             new_folder_id = parent_folder_id
@@ -135,6 +136,10 @@ def process_selection(folders, current_folder, sub_folders):
 def rename_folder(folders, folder):
     new_name = input('Enter new name: ')
     return folders.update_folder_name(folder['Id'], new_name)
+
+def redef_parent_folder(folders, folder):
+    new_name = input('Enter new name: ')
+    return folders.update_folder_json(folder['Id'], new_name)
     
 def delete_folder(folders, folder):
     return folders.delete_folder(folder['Id'])
