@@ -1,4 +1,4 @@
-### Panopto API with Python
+### Panopto API with Python (Creating Empty sessions)
 
 ### Goals:
 * Auto-upload and create empty sessions
