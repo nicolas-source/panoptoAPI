@@ -1,4 +1,26 @@
-### Panopto API with Python
+### Panopto API with Python (Organizing Folders)
+
+### Goals:
+* Automate organizing folders
+
+
+#### Features:
+* Pull into CSV file
+
+
+
+#### Usage examples:
+Run the following from terminal from directory .../panoptoAPI/folders
+
+-----Demo-----
+(CSV Files)
+python3 sample.py ...
+
+
+
+
+----------------------------------------
+### Panopto API with Python (Creating Empty Sessions)
 
 ### Goals:
 * Auto-upload and create empty sessions
