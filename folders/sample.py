@@ -3,6 +3,11 @@ import sys
 import argparse
 import requests
 import urllib3
+import csv
+import os.path
+from os import path
+
+from credentials import *
 
 from panopto_folders import PanoptoFolders
 
@@ -22,8 +27,20 @@ def parse_argument():
     parser.add_argument('--skip-verify', dest='skip_verify', action='store_true', required=False, help='Skip SSL certificate verification. (Never apply to the production code)')
     return parser.parse_args()
 
+class modifiedArg():
+    def __init__(self, server, client_id, client_secret):
+        self.server = server
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.skip_verify = True
+
+
+
 def main():
-    args = parse_argument()
+    # args = parse_argument()   # Edited
+    args = modifiedArg(server,
+                      clientID,
+                      clientSecret)
 
     if args.skip_verify:
         # This line is needed to suppress annoying warning message.
@@ -87,6 +104,35 @@ def get_and_display_sub_folders(folders, current_folder_id):
     
     return result
 
+def listFoldersToCSV(folders, current_folder_id):
+    original = "outputFoldersCSV"
+    name = "outputFoldersCSV"
+
+    print("Checking file existance")
+
+    # global counter
+    counter = 0
+    while path.exists('csvFiles/' + name + ".csv"):
+
+        counter = counter + 1
+        name = name + str(counter)
+
+    print('Writing to CSV:')
+
+
+    with open('csvFiles/' + original + str(counter) + ".csv", mode='w') as csv_file:
+
+        fieldnames = ['Name', 'Id', 'Parent Name', 'Parent Id']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for entry in folders.get_children(current_folder_id):
+            writer.writerow({'Name': entry['Name'],
+                             'Id': entry['Id'],
+                             'Parent Name': entry['ParentFolder']['Name'],
+                             'Parent Id': entry['ParentFolder']['Id']
+                             })
+
 def process_selection(folders, current_folder, sub_folders):
     if current_folder is None:
         new_folder_id = GUID_TOPLEVEL
@@ -104,6 +150,7 @@ def process_selection(folders, current_folder, sub_folders):
     print('[D] Delete this folder')
     print('[S] Search folders')
     print('[L] List sessions in the folder')
+    print('[C] List folders to CSV')
     print()
     selection = input('Enter the command (select number to move folder): ')
 
@@ -128,6 +175,8 @@ def process_selection(folders, current_folder, sub_folders):
             new_folder_id = result
     elif selection.lower() == 'l' and current_folder is not None:
         list_sessions(folders, current_folder)
+    elif selection.lower() == 'c' and current_folder is not None:
+        listFoldersToCSV(folders, parent_folder_id)
     else:
         print('Invalid command.')
     
