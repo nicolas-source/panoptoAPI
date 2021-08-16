@@ -8,6 +8,7 @@ parent_course_folder_df = currentSheet_DataFrame[['Division Folder', 'Course Lev
 
 parent_course_folder_df = parent_course_folder_df.dropna()
 parent_course_folder_df.columns = ['ParentName', 'CourseName']
+parent_course_folder_df = parent_course_folder_df.drop_duplicates()
 
 data = []
 prev = None
@@ -33,19 +34,31 @@ multipleSharedCourses_df = pd.DataFrame(multipleSharedCourses, columns=["CourseN
 #
 # print(parent_course_folder_df)
 
+def dictionaryExistInList(key, value, list):
+    if not list:
+        return False, None
+    for item in list:
+        if item[key] == value:
+            return True, item
+
+
 funcData = []
 nonFuncData = []
 
 print("Original\n", parent_course_folder_df)
 
 for index, row in parent_course_folder_df.iterrows():
-    if row["CourseName"] in funcData:
-        if row["CourseName"] in nonFuncData:
-            continue
-        else:
-            nonFuncData.append({'ParentName': row["ParentName"], 'CourseName': row["CourseName"]})
+    existence, item = dictionaryExistInList("CourseName", row["CourseName"], funcData)
+    if existence:
+        if item is not None:
+            if item["ParentName"] == row["ParentName"]:
+                continue
+            else:
+                nonFuncData.append({'ParentName': row["ParentName"], 'CourseName': row["CourseName"]})
     else:
         funcData.append({'ParentName': row["ParentName"], 'CourseName': row["CourseName"]})
+
+
 
 
 
@@ -54,7 +67,6 @@ nonFuncData_df = pd.DataFrame(nonFuncData)
 
 print(funcData_df)
 print(nonFuncData_df)
-
 
 # for index, row in parent_course_folder_df.iterrows():
 #     if prev != row["CourseName"]:
