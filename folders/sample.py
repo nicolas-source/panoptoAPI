@@ -58,7 +58,7 @@ def main():
     folders = PanoptoFolders(args.server, not args.skip_verify, oauth2)
     
     current_folder_id = GUID_TOPLEVEL
-    
+
     while True:
         print('----------------------------')
         current_folder = get_and_display_folder(folders, current_folder_id)
@@ -102,6 +102,26 @@ def get_and_display_sub_folders(folders, current_folder_id):
         print('  [{0}]: {1}'.format(key, entry['Name']))
         key += 1
     
+    return result
+
+
+def get_and_print_sub_folders(folders, current_folder_id):
+    print()
+    print('Sub Folders:')
+    children = folders.get_children(current_folder_id)
+
+    # returning object is the dictionary, key (integer) and folder's ID (UUID)
+    result = {}
+    key = 0
+    with open("csvFiles/outputParent.csv", "w") as csvfile:
+        writer = csv.writer(csvfile, delimiter=',')
+        writer.writerow(['Name', 'Id'])
+        for entry in children:
+            result[key] = entry['Id']
+            print('  [{0}]: {1} : {2}'.format(key, entry['Name'], entry['Id']))
+            writer.writerow([entry['Name'], entry['Id']])
+            key += 1
+
     return result
 
 def listFoldersToCSV(folders, current_folder_id):
@@ -151,6 +171,7 @@ def process_selection(folders, current_folder, sub_folders):
     print('[S] Search folders')
     print('[L] List sessions in the folder')
     print('[C] List folders to CSV')
+    print('[A] List folders to from folder Id')
     print()
     selection = input('Enter the command (select number to move folder): ')
 
@@ -177,6 +198,9 @@ def process_selection(folders, current_folder, sub_folders):
         list_sessions(folders, current_folder)
     elif selection.lower() == 'c' and current_folder is not None:
         listFoldersToCSV(folders, parent_folder_id)
+    elif selection.lower() == 'a' and current_folder is not None:
+        folder_id = input("Enter folder Id: ")
+        get_and_print_sub_folders(folders, folder_id)
     else:
         print('Invalid command.')
     
@@ -215,10 +239,34 @@ def search_folder(folders):
 
     return new_folder_id
 
+def mainGetSubFolders():
+    args = modifiedArg(server,
+                       clientID,
+                       clientSecret)
+
+    if args.skip_verify:
+        # This line is needed to suppress annoying warning message.
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    # Use requests module's Session object in this example.
+    # ref. https://2.python-requests.org/en/master/user/advanced/#session-objects
+    requests_session = requests.Session()
+    requests_session.verify = not args.skip_verify
+
+    # Load OAuth2 logic
+    oauth2 = PanoptoOAuth2(args.server, args.client_id, args.client_secret, not args.skip_verify)
+
+    # Load Folders API logic
+    folders = PanoptoFolders(args.server, not args.skip_verify, oauth2)
+
+    folder_id = input("Enter folder Id: ")
+    get_and_print_sub_folders(folders, folder_id)
+
 def list_sessions(folders, folder):
     print('Sessions in the folder:')
     for entry in folders.get_sessions(folder['Id']):
         print('  {0}: {1}'.format(entry['Id'], entry['Name']))
     
 if __name__ == '__main__':
-    main()
+    # main()
+    mainGetSubFolders()
