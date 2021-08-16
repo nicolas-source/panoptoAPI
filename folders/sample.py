@@ -177,10 +177,10 @@ def get_and_print_sub_folders_2Levels(folders, current_folder_id):
             # print('  [{0}]: {1} : {2}'.format(key, entry['Name'], entry['Id']))
             # writer.writerow([entry['Name'], entry['Id']])
             key += 1
-
+            time.sleep(10)
             childrenchildren = folders.get_children(entry['Id'])
             for entryentry in childrenchildren:
-                time.sleep(5)
+                time.sleep(1)
                 result[key] = entryentry['Id']
                 # print('  [{0}]: {1} : {2}'.format(key, entry['Name'], entry['Id']))
                 writer.writerow([entry['Name'], entry['Id'], entryentry['Name'], entryentry['Id']])
