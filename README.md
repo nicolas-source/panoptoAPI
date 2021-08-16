@@ -17,7 +17,28 @@ Run the following from terminal from directory .../panoptoAPI/folders
 python3 sample.py ...
 
 
+Automated Scheduling Test
+|
+v
+CSV 0 of Complete mapping of courses to parent folders
 
+UBC Sauder
+|
+v
+CSV 1 of Parent Folder Ids (Destination)
+
+Sauder
+|
+v
+CSV 2 of child Folder Ids (Origin)
+
+CSV 1 and CSV 2 are used to produce similarity measure between
+text of course names (strings), this produces a CSV of 
+child folders pointing to the correct parent folder Ids
+
+This final CSV is handed off to the Panopto API where the 
+assignment of the correct (destination) parent folder IDs occurs
+for all the 144 child folders.
 
 ----------------------------------------
 ### Panopto API with Python (Creating Empty Sessions)

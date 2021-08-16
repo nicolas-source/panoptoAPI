@@ -32,7 +32,7 @@ for originInd in childOrigin_df.index:
             best_rating = current_rating
             best_rating_index = destInd
     print(best_rating, best_rating_index)
-    matchingList.append((childOrigin_df["Name"][originInd], parentDest_df['ChildChildName'][best_rating_index]))
+    matchingList.append((originInd, childOrigin_df["Name"][originInd], best_rating_index, parentDest_df['ChildChildName'][best_rating_index]))
         # print(childOrigin_df["Name"][originInd])
         # print(parentDest_df['ChildChildName'][destInd])
 
@@ -42,3 +42,45 @@ print(matchingList)
 
 print(tabulate(matchingList))
 print("Length\n", len(matchingList))
+
+
+matchingList.pop(143)
+matchingList.pop(142)
+matchingList.pop(135)
+matchingList.pop(134)
+matchingList.pop(133)
+matchingList.pop(132)
+matchingList.pop(131)
+matchingList.pop(130)
+matchingList.pop(72)
+matchingList.pop(71)
+matchingList.pop(60)
+matchingList.pop(59)
+
+
+
+print(tabulate(matchingList))
+print("Length\n", len(matchingList))
+
+
+pieced_list = []
+
+
+for theTuple in matchingList:
+    a = theTuple[0]
+    b = theTuple[1]
+    c = theTuple[2]
+    d = theTuple[3]
+
+    pieced_list.append((childOrigin_df['ChildName'].iloc[a], childOrigin_df[a]['ChildId'].iloc[a], parentDest_df['ChildChildName'].iloc[c], parentDest_df[c]['ChildChildId'].iloc[c]))
+
+
+print(pieced_list)
+
+
+
+
+
+
+
+
