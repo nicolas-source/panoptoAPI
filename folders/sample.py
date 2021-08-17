@@ -375,20 +375,102 @@ def mainRefDefParentFolders():
     SubFolder2 = "ab7f393a-b465-4945-9d42-ad8701215e84"
 
     combinedList = []
-    combinedList.append({"Child": SubFolder1, "Parent": Folder1})
-    combinedList.append({"Child": SubFolder2, "Parent": Folder2})
+    # combinedList.append({"Child": SubFolder1, "Parent": Folder1})
+    # combinedList.append({"Child": SubFolder2, "Parent": Folder2})
+    print(combinedList)
+
+    with open('Tools/piecedList.csv') as csvfile:
+        # read the file
+        reader = csv.DictReader(csvfile)
+
+        # for every line in the csv
+        for row in reader:
+            # create a friend tuple
+            combinedList.append(row)
+    import tabulate
+
+
+    for entry in combinedList:
+        print((entry["ChildName"], entry["NewParentName"]))
 
     log = []
 
-    for entry in combinedList:
-        redef_parent_folder_DirectID(folders, entry["Child"], entry["Parent"])
-        log.append({"Child": entry["Child"], "Parent": entry["Parent"]})
+    # for entry in combinedList:
+    #     time.sleep(2)
+    #     redef_parent_folder_DirectID(folders, entry["ChildId"], entry["NewParentId"])
+    #     log.append({"ChildId": entry["ChildId"], "NewParentId": entry["NewParentId"]})
 
     keys = log[0].keys()
     with open('log.csv', 'w') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(log)
+
+def mainRefDefParentFoldersManual():
+    args = modifiedArg(server,
+                       clientID,
+                       clientSecret)
+
+    if args.skip_verify:
+        # This line is needed to suppress annoying warning message.
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    # Use requests module's Session object in this example.
+    # ref. https://2.python-requests.org/en/master/user/advanced/#session-objects
+    requests_session = requests.Session()
+    requests_session.verify = not args.skip_verify
+
+    # Load OAuth2 logic
+    oauth2 = PanoptoOAuth2(args.server, args.client_id, args.client_secret, not args.skip_verify)
+
+    # Load Folders API logic
+    folders = PanoptoFolders(args.server, not args.skip_verify, oauth2)
+
+    # Start of re def parent Id logic
+
+    # Test with single re def
+    targetFolder_id = "ab7f393a-b465-4945-9d42-ad8701215e84"
+    newParentFolder_id = "e6e4905f-d2eb-4a67-aee5-acb1003f3086"
+    redef_parent_folder_DirectID(folders, targetFolder_id, newParentFolder_id)
+    # get_and_display_sub_folders(folders, newParentFolder_id)
+
+    # Test with 2 re defs
+
+    COMM486F = "3b7754cb-fbe8-43af-9591-ad87016ec8e2"
+    COMM486M = "24790c1f-b380-4033-8b4e-ad87016f1763"
+    COMM486U = "fe3294b5-8df9-4c93-b838-ad87016f4e10"
+
+    COMM386U = "fe3294b5-8df9-4c93-b838-ad87016f4e10"
+    Old_COMM391 = "c1a0d63c-9505-4a23-8895-fa5d3d4c656c"
+
+
+    combinedList = []
+    # combinedList.append({"ChildId": "76e81964-0c8e-4701-b1ff-6bf5a61a279b", "NewParentId": COMM486F})
+    # combinedList.append({"ChildId": "fa526c6f-b322-4d3f-a016-e16f94acf108", "NewParentId": COMM486M})
+    # combinedList.append({"ChildId": "3b057d07-54f3-4afd-b8d0-9a539f0b9536", "NewParentId": COMM486M})
+    # combinedList.append({"ChildId": "f7000f07-3721-4831-b858-ab7c016a9aa1", "NewParentId": COMM486M})
+    # combinedList.append({"ChildId": "76c728ad-f3ec-4e75-8e6d-cba7400a8871", "NewParentId": COMM486U})
+    # combinedList.append({"ChildId": "e0a43c7a-b261-467e-bb9e-b08a97d883c8", "NewParentId": COMM486U})
+
+    combinedList.append({"ChildId": "1d45eb6d-1392-4b45-98e8-ad1b502890e3", "NewParentId": Old_COMM391})
+    combinedList.append({"ChildId": "08e69f41-f058-4740-a0fd-8c5862b85c9e", "NewParentId": Old_COMM391})
+
+    print(combinedList)
+
+
+    log = []
+
+    for entry in combinedList:
+        time.sleep(1)
+        # redef_parent_folder_DirectID(folders, entry["ChildId"], entry["NewParentId"])
+        log.append({"ChildId": entry["ChildId"], "NewParentId": entry["NewParentId"]})
+
+    keys = log[0].keys()
+    with open('logManual.csv', 'w') as output_file:
+        dict_writer = csv.DictWriter(output_file, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(log)
+
 
 def list_sessions(folders, folder):
     print('Sessions in the folder:')
@@ -399,4 +481,5 @@ def list_sessions(folders, folder):
 if __name__ == '__main__':
     # main()
     # mainGetSubFolders()
-    mainRefDefParentFolders()
+    # mainRefDefParentFolders()
+    mainRefDefParentFoldersManual()

@@ -43,18 +43,18 @@ print(matchingList)
 print(tabulate(matchingList))
 print("Length\n", len(matchingList))
 
-# matchingList.pop(143)
-# matchingList.pop(142)
-# matchingList.pop(135)
-# matchingList.pop(134)
-# matchingList.pop(133)
-# matchingList.pop(132)
-# matchingList.pop(131)
-# matchingList.pop(130)
+# matchingList.pop(143) v
+# matchingList.pop(142) v
+# matchingList.pop(135) v
+# matchingList.pop(134) v
+# matchingList.pop(133) v
+# matchingList.pop(132) v
+# matchingList.pop(131) v
+# matchingList.pop(130) v
 # matchingList.pop(72) (391->439)
 # matchingList.pop(71) (391->439)
-# matchingList.pop(60)
-# matchingList.pop(59)
+# matchingList.pop(60) v
+# matchingList.pop(59) v
 matchingList.pop(0)
 
 print(tabulate(matchingList))
