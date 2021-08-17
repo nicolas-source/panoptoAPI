@@ -276,9 +276,14 @@ def rename_folder(folders, folder):
     return folders.update_folder_name(folder['Id'], new_name)
 
 
-def redef_parent_folder(folders, folder):
-    new_name = input('Enter new name: ')
-    return folders.update_folder_json(folder['Id'], new_name)
+def redef_parent_folder(folders, targetFolder, newParentFolder):
+    # new_name = input('Enter new name: ')
+    return folders.update_folder_json(targetFolder['Id'], newParentFolder)
+
+
+def redef_parent_folder_DirectID(folders, targetFolder, newParentFolder):
+    # new_name = input('Enter new name: ')
+    return folders.update_folder_json(targetFolder, newParentFolder)
 
 
 def delete_folder(folders, folder):
@@ -334,6 +339,35 @@ def mainGetSubFolders():
     get_and_print_sub_folders_2Levels(folders, folder_id)
 
 
+def mainRefDefParentFolders():
+    args = modifiedArg(server,
+                       clientID,
+                       clientSecret)
+
+    if args.skip_verify:
+        # This line is needed to suppress annoying warning message.
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    # Use requests module's Session object in this example.
+    # ref. https://2.python-requests.org/en/master/user/advanced/#session-objects
+    requests_session = requests.Session()
+    requests_session.verify = not args.skip_verify
+
+    # Load OAuth2 logic
+    oauth2 = PanoptoOAuth2(args.server, args.client_id, args.client_secret, not args.skip_verify)
+
+    # Load Folders API logic
+    folders = PanoptoFolders(args.server, not args.skip_verify, oauth2)
+
+    # Start of re def parent Id logic
+    targetFolder_id = "ab7f393a-b465-4945-9d42-ad8701215e84"
+    test_id = "59474fd8-dd80-4a51-a63f-aaf6017f1b73"
+    newParentFolder_id = "e6e4905f-d2eb-4a67-aee5-acb1003f3086"
+    # redef_parent_folder_DirectID(folders, targetFolder_id, newParentFolder_id)
+
+    get_and_display_sub_folders(folders, test_id)
+
+
 def list_sessions(folders, folder):
     print('Sessions in the folder:')
     for entry in folders.get_sessions(folder['Id']):
@@ -341,5 +375,6 @@ def list_sessions(folders, folder):
 
 
 if __name__ == '__main__':
-    # main()
-    mainGetSubFolders()
+    main()
+    # mainGetSubFolders()
+    # mainRefDefParentFolders()

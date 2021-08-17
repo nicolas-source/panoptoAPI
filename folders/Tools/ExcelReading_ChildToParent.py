@@ -1,6 +1,7 @@
 import pandas as pd
 from difflib import SequenceMatcher
 from tabulate import tabulate
+import csv
 
 parentDest_df = pd.read_csv(
     open("../csvFiles/outputParentDest.csv", 'rb'))
@@ -42,18 +43,19 @@ print(matchingList)
 print(tabulate(matchingList))
 print("Length\n", len(matchingList))
 
-matchingList.pop(143)
-matchingList.pop(142)
-matchingList.pop(135)
-matchingList.pop(134)
-matchingList.pop(133)
-matchingList.pop(132)
-matchingList.pop(131)
-matchingList.pop(130)
-matchingList.pop(72)
-matchingList.pop(71)
-matchingList.pop(60)
-matchingList.pop(59)
+# matchingList.pop(143)
+# matchingList.pop(142)
+# matchingList.pop(135)
+# matchingList.pop(134)
+# matchingList.pop(133)
+# matchingList.pop(132)
+# matchingList.pop(131)
+# matchingList.pop(130)
+# matchingList.pop(72) (391->439)
+# matchingList.pop(71) (391->439)
+# matchingList.pop(60)
+# matchingList.pop(59)
+matchingList.pop(0)
 
 print(tabulate(matchingList))
 print("Length\n", len(matchingList))
@@ -77,10 +79,19 @@ for theTuple in matchingList:
     print(parentDest_df['ChildChildName'].iloc[c])
     print(parentDest_df['ChildChildId'].iloc[c])
 
-    pieced_list.append({'ChildName': childOrigin_df['ChildName'].iloc[a],
+    pieced_list.append({'Index': a,
+                        'ParentName': childOrigin_df['Name'].iloc[a],
+                        'ParentId': childOrigin_df['Id'].iloc[a],
+                        'ChildName': childOrigin_df['ChildName'].iloc[a],
                         'ChildId': childOrigin_df['ChildId'].iloc[a],
-                        'ChildChildName': parentDest_df['ChildChildName'].iloc[c],
-                        'ChildChildId': parentDest_df['ChildChildId'].iloc[c]
+                        'NewParentName': parentDest_df['ChildChildName'].iloc[c],
+                        'NewParentId': parentDest_df['ChildChildId'].iloc[c]
                         })
 
 print(tabulate(pieced_list))
+
+keys = pieced_list[0].keys()
+with open('piecedList.csv', 'w') as output_file:
+    dict_writer = csv.DictWriter(output_file, keys)
+    dict_writer.writeheader()
+    dict_writer.writerows(pieced_list)
