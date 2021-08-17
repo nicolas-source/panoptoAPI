@@ -360,13 +360,35 @@ def mainRefDefParentFolders():
     folders = PanoptoFolders(args.server, not args.skip_verify, oauth2)
 
     # Start of re def parent Id logic
+
+    # Test with single re def
     targetFolder_id = "ab7f393a-b465-4945-9d42-ad8701215e84"
-    test_id = "59474fd8-dd80-4a51-a63f-aaf6017f1b73"
     newParentFolder_id = "e6e4905f-d2eb-4a67-aee5-acb1003f3086"
-    # redef_parent_folder_DirectID(folders, targetFolder_id, newParentFolder_id)
+    redef_parent_folder_DirectID(folders, targetFolder_id, newParentFolder_id)
+    # get_and_display_sub_folders(folders, newParentFolder_id)
 
-    get_and_display_sub_folders(folders, test_id)
+    # Test with 2 re defs
+    Folder1 = "e6e4905f-d2eb-4a67-aee5-acb1003f3086"
+    Folder2 = "800f6ab8-3cb0-4c85-aac1-acb100427930"
 
+    SubFolder1 = "137b4a76-9642-4824-b4a9-ad870124e6d2"
+    SubFolder2 = "ab7f393a-b465-4945-9d42-ad8701215e84"
+
+    combinedList = []
+    combinedList.append({"Child": SubFolder1, "Parent": Folder1})
+    combinedList.append({"Child": SubFolder2, "Parent": Folder2})
+
+    log = []
+
+    for entry in combinedList:
+        redef_parent_folder_DirectID(folders, entry["Child"], entry["Parent"])
+        log.append({"Child": entry["Child"], "Parent": entry["Parent"]})
+
+    keys = log[0].keys()
+    with open('log.csv', 'w') as output_file:
+        dict_writer = csv.DictWriter(output_file, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(log)
 
 def list_sessions(folders, folder):
     print('Sessions in the folder:')
@@ -375,6 +397,6 @@ def list_sessions(folders, folder):
 
 
 if __name__ == '__main__':
-    main()
+    # main()
     # mainGetSubFolders()
-    # mainRefDefParentFolders()
+    mainRefDefParentFolders()
