@@ -401,7 +401,7 @@ def mainRefDefParentFolders():
     #     log.append({"ChildId": entry["ChildId"], "NewParentId": entry["NewParentId"]})
 
     keys = log[0].keys()
-    with open('csvFiles/log.csv', 'w') as output_file:
+    with open('csvFiles/ParentFolderReassignOperationsLog.csv', 'w') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(log)
