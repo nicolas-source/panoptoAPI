@@ -1,7 +1,7 @@
 import pandas as pd
 
 currentSheet_DataFrame = pd.read_excel(
-    open("Automated Scheduling Test Local.xlsx", 'rb'),
+    open("../csvFiles/Automated Scheduling Test Local.xlsx", 'rb'),
     sheet_name='Panopto Folders to Create')
 
 parent_course_folder_df = currentSheet_DataFrame[['Division Folder', 'Course Level Folder']]

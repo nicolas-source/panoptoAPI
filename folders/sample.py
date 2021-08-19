@@ -379,7 +379,7 @@ def mainRefDefParentFolders():
     # combinedList.append({"Child": SubFolder2, "Parent": Folder2})
     print(combinedList)
 
-    with open('Tools/piecedList.csv') as csvfile:
+    with open('csvFiles/piecedList.csv') as csvfile:
         # read the file
         reader = csv.DictReader(csvfile)
 
@@ -401,7 +401,7 @@ def mainRefDefParentFolders():
     #     log.append({"ChildId": entry["ChildId"], "NewParentId": entry["NewParentId"]})
 
     keys = log[0].keys()
-    with open('log.csv', 'w') as output_file:
+    with open('csvFiles/log.csv', 'w') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(log)

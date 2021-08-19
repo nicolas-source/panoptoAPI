@@ -91,7 +91,7 @@ for theTuple in matchingList:
 print(tabulate(pieced_list))
 
 keys = pieced_list[0].keys()
-with open('piecedList.csv', 'w') as output_file:
+with open('../csvFiles/piecedList.csv', 'w') as output_file:
     dict_writer = csv.DictWriter(output_file, keys)
     dict_writer.writeheader()
     dict_writer.writerows(pieced_list)
