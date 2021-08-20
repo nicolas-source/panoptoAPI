@@ -479,7 +479,7 @@ def list_sessions(folders, folder):
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     # mainGetSubFolders()
     # mainRefDefParentFolders()
-    mainRefDefParentFoldersManual()
+    # mainRefDefParentFoldersManual()
