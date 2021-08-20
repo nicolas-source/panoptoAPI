@@ -19,37 +19,6 @@ def parse_argument():
     parser.add_argument('--skip-verify', dest='skip_verify', action='store_true', required=False, help='Skip SSL certificate verification. (Never apply to the production code)')
     return parser.parse_args()
 
-def main():
-    args = parse_argument()
-
-    if args.skip_verify:
-        # This line is needed to suppress annoying warning message.
-        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-    # Use requests module's Session object in this example.
-    # ref. https://2.python-requests.org/en/master/user/advanced/#session-objects
-    requests_session = requests.Session()
-    requests_session.verify = not args.skip_verify
-    
-    # Load OAuth2 logic
-    oauth2 = PanoptoOAuth2(args.server, args.client_id, args.client_secret, not args.skip_verify)
-
-    # Load Sessions API logic
-    sessions = PanoptoSessions(args.server, not args.skip_verify, oauth2)
-    
-    if args.session_id is not None:
-        current_session_id = args.session_id
-    else:
-        current_session_id = None
-    
-    # Load the initial session (if any) and display the options menu
-    while True:
-        print('----------------------------')
-        if current_session_id is not None:
-            session = get_and_display_session(sessions, current_session_id)
-            
-        current_session_id = process_selection(sessions, current_session_id)
-
     
 def get_and_display_session(sessions, session_id):
     '''
@@ -127,6 +96,72 @@ def search_sessions(sessions):
         pass
 
     return new_session_id
-    
+
+
+def main():
+    args = parse_argument()
+
+    if args.skip_verify:
+        # This line is needed to suppress annoying warning message.
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    # Use requests module's Session object in this example.
+    # ref. https://2.python-requests.org/en/master/user/advanced/#session-objects
+    requests_session = requests.Session()
+    requests_session.verify = not args.skip_verify
+
+    # Load OAuth2 logic
+    oauth2 = PanoptoOAuth2(args.server, args.client_id, args.client_secret, not args.skip_verify)
+
+    # Load Sessions API logic
+    sessions = PanoptoSessions(args.server, not args.skip_verify, oauth2)
+
+    if args.session_id is not None:
+        current_session_id = args.session_id
+    else:
+        current_session_id = None
+
+    # Load the initial session (if any) and display the options menu
+    while True:
+        print('----------------------------')
+        if current_session_id is not None:
+            session = get_and_display_session(sessions, current_session_id)
+
+        current_session_id = process_selection(sessions, current_session_id)
+
+
+def mainGetAttributesFromSessionId():
+    args = parse_argument()
+
+    if args.skip_verify:
+        # This line is needed to suppress annoying warning message.
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    # Use requests module's Session object in this example.
+    # ref. https://2.python-requests.org/en/master/user/advanced/#session-objects
+    requests_session = requests.Session()
+    requests_session.verify = not args.skip_verify
+
+    # Load OAuth2 logic
+    oauth2 = PanoptoOAuth2(args.server, args.client_id, args.client_secret, not args.skip_verify)
+
+    # Load Sessions API logic
+    sessions = PanoptoSessions(args.server, not args.skip_verify, oauth2)
+
+    if args.session_id is not None:
+        current_session_id = args.session_id
+    else:
+        current_session_id = None
+
+    # Load the initial session (if any) and display the options menu
+    while True:
+        print('----------------------------')
+        if current_session_id is not None:
+            session = get_and_display_session(sessions, current_session_id)
+
+        current_session_id = process_selection(sessions, current_session_id)
+
+
 if __name__ == '__main__':
-    main()
+    # main()
+    mainGetAttributesFromSessionId
