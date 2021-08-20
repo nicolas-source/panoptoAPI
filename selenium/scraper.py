@@ -34,7 +34,7 @@ driver.find_element_by_xpath('//*[@id="passwordInput"]').send_keys(str(password)
 
 driver.find_element_by_xpath('//*[@id="PageContentPlaceholder_loginControl_LoginButton"]').click()
 time.sleep(2)
-driver.get("https://ubc.ca.panopto.com/Panopto/Pages/Sessions/List.aspx#status=%5B1%5D&maxResults=10&page=0")
+driver.get("https://ubc.ca.panopto.com/Panopto/Pages/Sessions/List.aspx#status=%5B1%5D&maxResults=100&page=0")
 
 # Reaches 'Scheduled" tab here
 
