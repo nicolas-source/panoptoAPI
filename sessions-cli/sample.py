@@ -4,6 +4,8 @@ import argparse
 import requests
 import urllib3
 
+import csv
+
 from panopto_sessions import PanoptoSessions
 
 from os.path import dirname, join, abspath
@@ -148,20 +150,31 @@ def mainGetAttributesFromSessionId():
     # Load Sessions API logic
     sessions = PanoptoSessions(args.server, not args.skip_verify, oauth2)
 
-    if args.session_id is not None:
-        current_session_id = args.session_id
-    else:
-        current_session_id = None
+    idList = []
 
-    # Load the initial session (if any) and display the options menu
-    while True:
-        print('----------------------------')
-        if current_session_id is not None:
-            session = get_and_display_session(sessions, current_session_id)
+    with open('../folders/csvFiles/scheduledSessionsIdList.csv', 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            idList.append(row)
 
-        current_session_id = process_selection(sessions, current_session_id)
+    counter = 0;
+    exportList = []
+    for id in idList:
+        print(counter)
+        counter += 1
+        if (len(id['Id']) < 3):
+            break
+        # session = get_and_display_session(sessions, id['Id'])
+        session = sessions.get_session(id['Id'])
+        exportList.append({'Name': session['Name'], 'ViewerUrl': session['Urls']['ViewerUrl'], 'Id': session['Id'], 'Folder Id': session['Folder']})
+
+    keys = exportList[0].keys()
+    with open('../folders/csvFiles/exportList.csv', 'w') as output_file:
+        dict_writer = csv.DictWriter(output_file, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(exportList)
 
 
 if __name__ == '__main__':
     # main()
-    mainGetAttributesFromSessionId
+    mainGetAttributesFromSessionId()
