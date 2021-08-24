@@ -13,11 +13,11 @@ from inspect import getsourcefile
 
 
 
-# ----Obtaining chromedriver
+# ----Obtaining chromedriver_mac
 file_path = abspath(getsourcefile(lambda _: None))
 file_dir = os.path.normpath(file_path + os.sep + os.pardir)
 print(file_dir)
-chromedriver = file_dir + "/chromedriver"
+chromedriver = file_dir + "/chromedriver_linux"
 
 
 # driver = webdriver.Chrome()
