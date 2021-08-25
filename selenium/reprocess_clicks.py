@@ -79,11 +79,20 @@ time.sleep(2)
 
 # re_process = driver.find_element_by_xpath('/html/body/form/div[3]/div[13]/div[2]/div[1]/input')
 
-re_process = driver.find_element_by_css_selector('#ModalContentPlaceHolder_processManagement > div:nth-child(2) > div.modal-subtitle > input[type=submit]')
+# re_process = driver.find_element_by_css_selector('#ModalContentPlaceHolder_processManagement > div:nth-child(2) > div.modal-subtitle > input[type=submit]')
 
-re_process.click()
+# re_process.click()
 
+tabs = ActionChains(driver)
+for i in range(0,12):
+    tabs = tabs.send_keys(Keys.TAB)
+tabs = tabs.send_keys(Keys.ENTER)
+tabs.perform()
+time.sleep(1)
+# tabs = tabs.send_keys(Keys.ENTER)
+# tabs.perform()
 
+alert = driver.switch_to.alert.accept()
 
 
 print(buttons)
