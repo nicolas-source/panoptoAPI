@@ -4,6 +4,7 @@
 2. Organizing Folders
 3. Creating and uploading empty sessions
 
+----------------------------------------
 ### Panopto API with Python (Scraping scheduled recorded sessions)
 
 Run panoptoAPI/selenium/scraper.py 
@@ -13,7 +14,7 @@ Can set number of scheduled recorded sessions desired based on how many are list
   -> Currently hard-coded
 
 
-
+----------------------------------------
 ### Panopto API with Python (Organizing Folders)
 
 ### Goals:
